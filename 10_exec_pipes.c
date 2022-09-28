@@ -34,7 +34,6 @@ char*** parser(char* cmd, FILE *logfile){
         i++;
         realparsed[i][0] = NULL;
         parsed = strtok(NULL, "|");
-        // printf("\nLINE %d:  parsed = %s\n", __LINE__, realparsed[i]);
     }
 
     return realparsed;
@@ -54,7 +53,6 @@ char** second_parser(char* cmd, FILE* logfile){
         fprintf(logfile, "LINE %d: realparsed[%d] = %s\n", __LINE__, i, realparsed[i]);
         i++;
         parsed = strtok(NULL, " ");
-        // printf("\nLINE %d:  parsed = %s\n", __LINE__, realparsed[i]);
     }
     realparsed[i] = NULL;
 
@@ -115,16 +113,10 @@ void seq_pipe(char ***cmd, FILE* logfile)
 int main()
 {
   FILE *logfile = fopen("logi_moi_logi.txt", "w");
-  // char *ls[] = {"/bin/ls","-ltr",".", NULL};
-  // char *grep1[] = {"grep","rw",NULL};
-  // char *grep2[] = {"grep","1", NULL};
-  // char *grep3[] = {"grep", "89", NULL};
   int k = 0, size = 0;
   char c, buf[4096], str[256];
-  // char** realparsed = (char**)calloc((size_t)(4096), (size_t)(sizeof(char**)));
   char*** realparsed = NULL;
   char** commands[10];
-  // size = read(STDIN_FILENO, buf, sizeof(buf)-1);
   c = (char)getchar();
 
   for(; c != '\n'; c = (char)getchar()){
@@ -135,7 +127,6 @@ int main()
   fprintf(logfile, "\nS = %s\n", str);
 
   realparsed = parser(str, logfile);
-  // char **cmd[] = {ls, grep1, grep2, grep3, NULL};
   for(int i = 0; i < k; i++) fprintf(logfile, "realparsed[%d][0] = %s\n", i, realparsed[i][0]);
   for(int i = 0; i < 5; i++) {
     commands[i] = second_parser(realparsed[2*i][0], logfile);
@@ -144,7 +135,6 @@ int main()
     fprintf(logfile, "i = %d, commands[%d][2] = %s\n", i, i, commands[i][2]);
     }
 
-  // for(int i = 0; i < 3; i++) printf("second_parser(realparsed[1]))[%d] = %s\n", i, (second_parser(realparsed[0]))[i]);
   for(int i = 0; i < 5; i++){
     for(int j = 0; j < 5; j++) {
       fprintf(logfile, "LINE %d:  commands[%d][%d] = %s\n", __LINE__, i, j, commands[i][j]);
@@ -157,10 +147,7 @@ int main()
       }
     }
   }
-  // fprintf(logfile, "\nLINE %d;\n", __LINE__);
   seq_pipe(&commands, logfile);
-  // // for(int i = 0; i < 10; i++) printf("\ncommands[%d] == %s", i, commands[i]);
-  // // execv(commands[1][0], commands[1]);
   fclose(logfile);
   return 0;
 }
